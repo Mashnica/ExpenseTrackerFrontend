@@ -1,5 +1,12 @@
+import MyTable from "../componets/MyTable";
+
 const Dashboard = () => {
-  return <h1> Expense-Tracker-app </h1>;
+  return (
+    // return <h1> <MyTable rows={} columns={} /></h1>;
+    <h1>
+      <MyTable row={rows} columns={columns} />
+    </h1>
+  );
 };
 
 export default Dashboard;

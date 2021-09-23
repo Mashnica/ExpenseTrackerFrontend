@@ -1,0 +1,15 @@
+.error {
+  background-color: darkgrey;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar a {
+  float: left;
+  display: block;
+  color: #eeeeee;
+  text-align: center;
+  padding: 15px 18px;
+  text-decoration: none;
+  font-size: 18px;
+}
