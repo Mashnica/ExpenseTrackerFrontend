@@ -1,11 +1,9 @@
 import MyTable from "../componets/MyTable";
 
 const GroupListPage = () => {
-  return (
-    <h1>
-      <MyTable />
-    </h1>
-  );
+  const rows = [];
+  const columns = [];
+  return <MyTable rows={rows} columns={columns} />;
 };
 
 export default GroupListPage;

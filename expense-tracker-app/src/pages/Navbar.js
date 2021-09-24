@@ -22,7 +22,7 @@ const Navbar = () => {
         <Toolbar className={styles.error}>
           <Box sx={{ width: "100%" }}>
             <Tabs
-              value={"/"}
+              value={value}
               onChange={handleChange}
               textColor="secondary"
               indicatorColor="secondary"
@@ -31,19 +31,19 @@ const Navbar = () => {
             >
               <Tab
                 label="Dashboard"
-                value={value}
+                value={routes[0]}
                 component={Link}
                 to={routes[0]}
               />
               <Tab
                 label="GroupList"
-                value={value}
+                value={routes[1]}
                 component={Link}
                 to={routes[1]}
               />
               <Tab
                 label="ListPage"
-                value={value}
+                value={routes[2]}
                 component={Link}
                 to={routes[2]}
               />
