@@ -19,7 +19,7 @@ const Navbar = () => {
   return (
     <AppBar position="static">
       <nav>
-        <Toolbar className={styles.error}>
+        <Toolbar className={styles.navb}>
           <Box sx={{ width: "100%" }}>
             <Tabs
               value={value}
@@ -30,18 +30,21 @@ const Navbar = () => {
               scrollButtons
             >
               <Tab
+                className={styles.m}
                 label="Dashboard"
                 value={routes[0]}
                 component={Link}
                 to={routes[0]}
               />
               <Tab
+                className={styles.m}
                 label="GroupList"
                 value={routes[1]}
                 component={Link}
                 to={routes[1]}
               />
               <Tab
+                className={styles.m}
                 label="ListPage"
                 value={routes[2]}
                 component={Link}
