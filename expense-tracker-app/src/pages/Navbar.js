@@ -30,21 +30,21 @@ const Navbar = () => {
               scrollButtons
             >
               <Tab
-                className={styles.m}
+                className={styles.margin}
                 label="Dashboard"
                 value={routes[0]}
                 component={Link}
                 to={routes[0]}
               />
               <Tab
-                className={styles.m}
+                className={styles.margin}
                 label="GroupList"
                 value={routes[1]}
                 component={Link}
                 to={routes[1]}
               />
               <Tab
-                className={styles.m}
+                className={styles.margin}
                 label="ListPage"
                 value={routes[2]}
                 component={Link}

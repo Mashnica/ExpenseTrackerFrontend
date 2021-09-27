@@ -1,4 +1,9 @@
+import * as React from "react";
 import MyTable from "../componets/MyTable";
+import styles from "../styles/Navbar.module.css";
+import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
+import Button from "@mui/material/Button";
+
 const Dashboard = () => {
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -38,7 +43,54 @@ const Dashboard = () => {
       GroupName: "Group2",
     },
   ];
-  return <MyTable rows={rows} columns={columns} title={"Last five"} />;
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  return (
+    <>
+      <h2>Total amount: </h2>
+
+      <AddExpenseIncomeDialog
+        open={open}
+        handleClose={handleClose}
+        title={"Add dialog"}
+      />
+      <Button
+        variant="contained"
+        onClick={handleClickOpen}
+        className={styles.button}
+      >
+        Add expense
+      </Button>
+      <p />
+      <Button
+        variant="contained"
+        onClick={handleClickOpen}
+        className={styles.button}
+      >
+        Add income
+      </Button>
+      <MyTable
+        rows={rows}
+        columns={columns}
+        title={"Last five expenses"}
+        className={styles.margin}
+      />
+
+      <MyTable
+        rows={rows}
+        columns={columns}
+        title={"Last five incomes"}
+        className={styles.margin}
+      />
+    </>
+  );
 };
 
 export default Dashboard;
