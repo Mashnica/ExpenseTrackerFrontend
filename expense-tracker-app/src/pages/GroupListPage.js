@@ -5,21 +5,28 @@ import * as React from "react";
 // import AddGroupExpenseIncomeDialog from "../componets/AddGroupExpenseIncomeDialog";
 import axios from "axios";
 import { useEffect, useState } from "react";
+// import getExpenseGroups from "../services/service";
+
+const client = axios.create({
+  baseURL: "http://localhost:5000",
+});
 
 const GroupListPage = () => {
-  const client = axios.create({
-    baseURL: "https://localhost:3000",
-  });
-  const [expenseGroup, setExpenseGroup] = useState(null);
+  const [expenseGroup, setExpenseGroup] = useState([]);
+
+  // useEffect(() => {
+  //   async function getExpenseGroup() {
+  //     const response = await axios.get(baseUrl);
+  //     debugger;
+  //     setExpenseGroup(response.data);
+  //   }
+  //   getExpenseGroup();
+  // }, []);
 
   useEffect(() => {
-    async function getExpenseGroup() {
-      const response = await axios.get(
-        "https://localhost:3000/exepense-groups"
-      );
+    client.get("/expense-groups").then((response) => {
       setExpenseGroup(response.data);
-    }
-    getExpenseGroup();
+    });
   }, []);
 
   // const columns = [
@@ -65,7 +72,11 @@ const GroupListPage = () => {
   // };
   return (
     // <>
-    <>{expenseGroup && <div>{expenseGroup}</div>}</>
+    <>
+      {expenseGroup.map((expenseGroup) => (
+        <h2>{expenseGroup.name}</h2>
+      ))}
+    </>
     /* <MyTable rows={rows} columns={columns} title={"Expense Groups List"} />
       <AddGroupExpenseIncomeDialog
         open={open}
