@@ -1,0 +1,30 @@
+.navb {
+  float: left;
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 15px 18px;
+  text-decoration: none;
+  font-size: 18px;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+.margin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-color: var(--color-primary);
+  border-width: 5px;
+  aspect-ratio: 5/1;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--auto-grid-min-size, 16rem), 1fr)
+  );
+  gap: 1rem;
+  padding: 0;
+}
+.button {
+  background-color: cyan;
+}
