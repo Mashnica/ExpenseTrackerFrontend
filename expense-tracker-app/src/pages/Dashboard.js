@@ -1,49 +1,63 @@
 import * as React from "react";
 import MyTable from "../componets/MyTable";
 import styles from "../styles/Navbar.module.css";
+import { useState } from "react";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
 import Button from "@mui/material/Button";
+import { useQuery } from "react-query";
+import { getExpenses, getIncomes } from "../services/service";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const Dashboard = () => {
+  const [open, setOpen] = useState(false);
+  const {
+    data: expensesLastFiveData,
+    error: expensesLastFiveError,
+    isLoading: isLoadingExpensesLastFive,
+    isError: isErrorExpensesLastFive,
+  } = useQuery("lastFiveExpenses", getExpenses);
+
+  const {
+    data: incomesLastFiveData,
+    error: incomesLastFiveError,
+    isLoading: isLoadingIncomesLastFive,
+    isError: isErrorIncomesLastFive,
+  } = useQuery("lastFiveIncomes", getIncomes);
+  if (isLoadingExpensesLastFive) {
+    return (
+      <>
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      </>
+    );
+  }
+
+  if (isErrorExpensesLastFive) {
+    return <span>Error: {expensesLastFiveError.message}</span>;
+  }
+  if (isLoadingIncomesLastFive) {
+    return (
+      <>
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      </>
+    );
+  }
+
+  if (isErrorIncomesLastFive) {
+    return <span>Error: {incomesLastFiveError.message}</span>;
+  }
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "Amount", headerName: "Amount", width: 130 },
-    { field: "Description", headerName: "Description", width: 200 },
-    { field: "GroupName", headerName: "GroupName", width: 200 },
+    { field: "_id", headerName: "_id", width: 70 },
+    { field: "amount", headerName: "amount", width: 130 },
+    { field: "dateCreated", headerName: "dateCreated", width: 200 },
+    { field: "dateUpdated", headerName: "dateUpdated", width: 200 },
+    { field: "description", headerName: "description", width: 200 },
+    { field: "expenseGroup", headerName: "expenseGroup", width: 200 },
   ];
-  const rows = [
-    {
-      id: 1,
-      Amount: 200,
-      Description: "BusinessExpense",
-      GroupName: "Group1",
-    },
-    {
-      id: 2,
-      Amount: 300,
-      Description: "EmergencyPurchase",
-      GroupName: "Group3",
-    },
-    {
-      id: 3,
-      Amount: 300,
-      Description: "EmergencyPurchase",
-      GroupName: "Group4",
-    },
-    {
-      id: 4,
-      Amount: 300,
-      Description: "Lunch",
-      GroupName: "Group1",
-    },
-    {
-      id: 5,
-      Amount: 500,
-      Description: "Lunch",
-      GroupName: "Group2",
-    },
-  ];
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,14 +91,14 @@ const Dashboard = () => {
         Add income
       </Button>
       <MyTable
-        rows={rows}
+        rows={expensesLastFiveData}
         columns={columns}
         title={"Last five expenses"}
         className={styles.margin}
       />
 
       <MyTable
-        rows={rows}
+        rows={incomesLastFiveData}
         columns={columns}
         title={"Last five incomes"}
         className={styles.margin}
