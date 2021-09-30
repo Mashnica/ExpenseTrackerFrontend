@@ -1,42 +1,52 @@
 import * as React from "react";
 import MyTable from "../componets/MyTable";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import styles from "../styles/Navbar.module.css";
 import AddGroupExpenseIncomeDialog from "../componets/AddGroupExpenseIncomeDialog";
+import { getExpenseGroups, getIncomeGroups } from "../services/service";
+import { useQuery } from "react-query";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
 const GroupListPage = () => {
+  const [open, setOpen] = useState(false);
+  const {
+    data: expenseGroupsData,
+    error: expenseGroupsError,
+    isLoading: isLoadingExpenseGroups,
+    isError: isErrorExpenseGroups,
+  } = useQuery("expenseGroup", getExpenseGroups);
+  const {
+    data: incomeGroupsData,
+    error: incomeGroupsError,
+    isLoading: isLoadingIncomeGroups,
+    isError: isErrorIncomeGroups,
+  } = useQuery("incomeGroup", getIncomeGroups);
+
+  if (isLoadingExpenseGroups || isLoadingIncomeGroups) {
+    return (
+      <>
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      </>
+    );
+  }
+
+  if (isErrorExpenseGroups || isErrorIncomeGroups) {
+    return (
+      <span>
+        Error: {expenseGroupsError.message || incomeGroupsError.message}
+      </span>
+    );
+  }
+
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "Name", headerName: "Name", width: 130 },
-    { field: "Description", headerName: "Description", width: 130 },
+    { field: "_id", headerName: "No.", width: 70 },
+    { field: "name", headerName: "Name", width: 130 },
+    { field: "description", headerName: "Description", width: 130 },
   ];
-  const rows = [
-    {
-      id: 1,
-      Name: "Group1",
-      Description:
-        "A cost incurred necessary to conduct thecompletion of official State business.",
-    },
-    {
-      id: 2,
-      Name: "Group2",
-      Description:
-        "A cost incurred necessary to conduct thecompletion of official State business.",
-    },
-    {
-      id: 3,
-      Name: "Group3",
-      Description:
-        "A cost incurred necessary to conduct thecompletion of official State business.",
-    },
-    {
-      id: 3,
-      Name: "Group4",
-      Description:
-        "A cost incurred necessary to conduct thecompletion of official State business.",
-    },
-  ];
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,7 +57,11 @@ const GroupListPage = () => {
   };
   return (
     <>
-      <MyTable rows={rows} columns={columns} title={"Expense Groups List"} />
+      <MyTable
+        rows={expenseGroupsData}
+        columns={columns}
+        title={"Expense Groups List"}
+      />
       <AddGroupExpenseIncomeDialog
         open={open}
         handleClose={handleClose}
@@ -68,7 +82,11 @@ const GroupListPage = () => {
       >
         Edit expense group
       </Button>
-      <MyTable rows={rows} columns={columns} title={"Income Groups List"} />
+      <MyTable
+        rows={incomeGroupsData}
+        columns={columns}
+        title={"Income Groups List"}
+      />
       <Button
         variant="contained"
         onClick={handleClickOpen}

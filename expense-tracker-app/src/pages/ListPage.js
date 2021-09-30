@@ -3,48 +3,48 @@ import MyTable from "../componets/MyTable";
 import Button from "@mui/material/Button";
 import styles from "../styles/Navbar.module.css";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
-
+import { useQuery } from "react-query";
+import { useState } from "react";
+import { getExpenses, getIncomes } from "../services/service";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 const ListPage = () => {
-  const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "Amount", headerName: "Amount", width: 130 },
-    { field: "Description", headerName: "Description", width: 200 },
-    { field: "GroupName", headerName: "GroupName", width: 200 },
-  ];
+  const [open, setOpen] = useState(false);
+  const {
+    data: expensesData,
+    error: expensesError,
+    isLoading: isLoadingExpenses,
+    isError: isErrorExpenses,
+  } = useQuery("expenses", getExpenses);
+  const {
+    data: incomesData,
+    error: incomesError,
+    isLoading: isLoadingIncomes,
+    isError: isErrorIncomes,
+  } = useQuery("incomes", getIncomes);
 
-  const rows = [
-    {
-      id: 1,
-      Amount: 200,
-      Description: "BusinessExpense",
-      GroupName: "Group1",
-    },
-    {
-      id: 2,
-      Amount: 300,
-      Description: "EmergencyPurchase",
-      GroupName: "Group3",
-    },
-    {
-      id: 3,
-      Amount: 300,
-      Description: "EmergencyPurchase",
-      GroupName: "Group4",
-    },
-    {
-      id: 4,
-      Amount: 300,
-      Description: "Lunch",
-      GroupName: "Group1",
-    },
-    {
-      id: 5,
-      Amount: 500,
-      Description: "Lunch",
-      GroupName: "Group2",
-    },
+  if (isLoadingExpenses || isLoadingIncomes) {
+    return (
+      <>
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      </>
+    );
+  }
+
+  if (isErrorExpenses || isErrorIncomes) {
+    return <span>Error: {expensesError.message || incomesError.message}</span>;
+  }
+
+  const columns = [
+    { field: "_id", headerName: "No", width: 70 },
+    { field: "amount", headerName: "Amount", width: 130 },
+    { field: "dateCreated", headerName: "Creation time", width: 200 },
+    { field: "dateUpdated", headerName: "Updated time", width: 200 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "expenseGroup", headerName: "Group name", width: 200 },
   ];
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,7 +55,11 @@ const ListPage = () => {
   };
   return (
     <>
-      <MyTable rows={rows} columns={columns} title={"List page"} />
+      <MyTable
+        rows={expensesData}
+        columns={columns}
+        title={"Expenses list page"}
+      />
       <AddExpenseIncomeDialog
         open={open}
         handleClose={handleClose}
@@ -77,7 +81,11 @@ const ListPage = () => {
         Edit expense
       </Button>
 
-      <MyTable rows={rows} columns={columns} title={"List page"} />
+      <MyTable
+        rows={incomesData}
+        columns={columns}
+        title={"Incomes list page "}
+      />
       <Button
         variant="contained"
         onClick={handleClickOpen}
