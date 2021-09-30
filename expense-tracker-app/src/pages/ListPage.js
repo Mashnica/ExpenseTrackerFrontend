@@ -23,7 +23,7 @@ const ListPage = () => {
     isError: isErrorIncomes,
   } = useQuery("incomes", getIncomes);
 
-  if (isLoadingExpenses) {
+  if (isLoadingExpenses || isLoadingIncomes) {
     return (
       <>
         <Box sx={{ display: "flex" }}>
@@ -33,29 +33,17 @@ const ListPage = () => {
     );
   }
 
-  if (isErrorExpenses) {
-    return <span>Error: {expensesError.message}</span>;
-  }
-  if (isLoadingIncomes) {
-    return (
-      <>
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress />
-        </Box>
-      </>
-    );
+  if (isErrorExpenses || isErrorIncomes) {
+    return <span>Error: {expensesError.message || incomesError.message}</span>;
   }
 
-  if (isErrorIncomes) {
-    return <span>Error: {incomesError.message}</span>;
-  }
   const columns = [
-    { field: "_id", headerName: "_id", width: 70 },
-    { field: "amount", headerName: "amount", width: 130 },
-    { field: "dateCreated", headerName: "dateCreated", width: 200 },
-    { field: "dateUpdated", headerName: "dateUpdated", width: 200 },
-    { field: "description", headerName: "description", width: 200 },
-    { field: "expenseGroup", headerName: "expenseGroup", width: 200 },
+    { field: "_id", headerName: "No", width: 70 },
+    { field: "amount", headerName: "Amount", width: 130 },
+    { field: "dateCreated", headerName: "Creation time", width: 200 },
+    { field: "dateUpdated", headerName: "Updated time", width: 200 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "expenseGroup", headerName: "Group name", width: 200 },
   ];
 
   const handleClickOpen = () => {

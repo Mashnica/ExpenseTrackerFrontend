@@ -24,7 +24,7 @@ const GroupListPage = () => {
     isError: isErrorIncomeGroups,
   } = useQuery("incomeGroup", getIncomeGroups);
 
-  if (isLoadingExpenseGroups) {
+  if (isLoadingExpenseGroups || isLoadingIncomeGroups) {
     return (
       <>
         <Box sx={{ display: "flex" }}>
@@ -34,27 +34,18 @@ const GroupListPage = () => {
     );
   }
 
-  if (isErrorExpenseGroups) {
-    return <span>Error: {expenseGroupsError.message}</span>;
-  }
-  if (isLoadingIncomeGroups) {
+  if (isErrorExpenseGroups || isErrorIncomeGroups) {
     return (
-      <>
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress />
-        </Box>
-      </>
+      <span>
+        Error: {expenseGroupsError.message || incomeGroupsError.message}
+      </span>
     );
-  }
-
-  if (isErrorIncomeGroups) {
-    return <span>Error: {incomeGroupsError.message}</span>;
   }
 
   const columns = [
-    { field: "_id", headerName: "_id", width: 70 },
-    { field: "name", headerName: "name", width: 130 },
-    { field: "description", headerName: "description", width: 130 },
+    { field: "_id", headerName: "No.", width: 70 },
+    { field: "name", headerName: "Name", width: 130 },
+    { field: "description", headerName: "Description", width: 130 },
   ];
 
   const handleClickOpen = () => {

@@ -5,7 +5,7 @@ import { useState } from "react";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
-import { getExpenses, getIncomes } from "../services/service";
+import { getLastFiveExpenses, getLastFiveIncomes } from "../services/service";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
@@ -16,15 +16,15 @@ const Dashboard = () => {
     error: expensesLastFiveError,
     isLoading: isLoadingExpensesLastFive,
     isError: isErrorExpensesLastFive,
-  } = useQuery("lastFiveExpenses", getExpenses);
+  } = useQuery("lastFiveExpenses", getLastFiveExpenses);
 
   const {
     data: incomesLastFiveData,
     error: incomesLastFiveError,
     isLoading: isLoadingIncomesLastFive,
     isError: isErrorIncomesLastFive,
-  } = useQuery("lastFiveIncomes", getIncomes);
-  if (isLoadingExpensesLastFive) {
+  } = useQuery("lastFiveIncomes", getLastFiveIncomes);
+  if (isLoadingExpensesLastFive || isLoadingIncomesLastFive) {
     return (
       <>
         <Box sx={{ display: "flex" }}>
@@ -34,29 +34,21 @@ const Dashboard = () => {
     );
   }
 
-  if (isErrorExpensesLastFive) {
-    return <span>Error: {expensesLastFiveError.message}</span>;
-  }
-  if (isLoadingIncomesLastFive) {
+  if (isErrorExpensesLastFive || isErrorIncomesLastFive) {
     return (
-      <>
-        <Box sx={{ display: "flex" }}>
-          <CircularProgress />
-        </Box>
-      </>
+      <span>
+        Error: {expensesLastFiveError.message || incomesLastFiveError.message}
+      </span>
     );
   }
 
-  if (isErrorIncomesLastFive) {
-    return <span>Error: {incomesLastFiveError.message}</span>;
-  }
   const columns = [
-    { field: "_id", headerName: "_id", width: 70 },
-    { field: "amount", headerName: "amount", width: 130 },
-    { field: "dateCreated", headerName: "dateCreated", width: 200 },
-    { field: "dateUpdated", headerName: "dateUpdated", width: 200 },
-    { field: "description", headerName: "description", width: 200 },
-    { field: "expenseGroup", headerName: "expenseGroup", width: 200 },
+    { field: "_id", headerName: "No.", width: 70 },
+    { field: "amount", headerName: "Amount", width: 130 },
+    { field: "dateCreated", headerName: "Creation time", width: 200 },
+    { field: "dateUpdated", headerName: "Updated time", width: 200 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "expenseGroup", headerName: "Group name", width: 200 },
   ];
 
   const handleClickOpen = () => {

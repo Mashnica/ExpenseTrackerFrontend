@@ -48,9 +48,9 @@ export async function getIncomes() {
     });
   return res.data;
 }
-export async function getLastFiveExpense() {
+export async function getLastFiveExpenses() {
   const res = await client
-    .get("/last-fiveExpense")
+    .get("/expenses/last-five")
     .then(function (response) {
       return response;
     })
@@ -61,7 +61,7 @@ export async function getLastFiveExpense() {
 }
 export async function getLastFiveIncomes() {
   const res = await client
-    .get("/last-fiveIncomes")
+    .get("/incomes/last-five")
     .then(function (response) {
       return response;
     })
@@ -70,56 +70,3 @@ export async function getLastFiveIncomes() {
     });
   return res.data;
 }
-// //POST
-// export default function addExpenseGroup(){
-// return client
-//   .post("/expense-groups", {
-//     name: "Group1",
-//     description: "",
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
-// }
-// export default function addIncomeGroup(){
-// return client
-//   .post("/income-groups", {
-//     name: "Group1",
-//     description: "",
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
-// }
-// export default function addExpenses(){
-//   return client
-//   .post("/expenses", {
-//     amount: 34,
-//     description: "Description2",
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
-// }
-// export default function addIncomes(){
-//  return client
-//   .post("/incomes", {
-//     amount: 349,
-//     description: "Description233",
-//   })
-//   .then(function (response) {
-//     console.log(response);
-//   })
-//   .catch(function (error) {
-//     console.log(error);
-//   });
-// }
