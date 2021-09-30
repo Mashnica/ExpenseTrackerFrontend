@@ -3,7 +3,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import styles from "../styles/MyTable.module.css";
 
 export default function MyTable(props) {
-  debugger;
   const rows = props.rows.map((row) => ({ ...row, id: row._id }));
 
   return (
