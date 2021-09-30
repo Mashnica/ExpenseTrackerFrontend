@@ -42,13 +42,21 @@ const Dashboard = () => {
     );
   }
 
-  const columns = [
+  const columnsExpense = [
     { field: "_id", headerName: "No.", width: 70 },
     { field: "amount", headerName: "Amount", width: 130 },
     { field: "dateCreated", headerName: "Creation time", width: 200 },
     { field: "dateUpdated", headerName: "Updated time", width: 200 },
     { field: "description", headerName: "Description", width: 200 },
     { field: "expenseGroup", headerName: "Group name", width: 200 },
+  ];
+  const columnsIncome = [
+    { field: "_id", headerName: "No.", width: 70 },
+    { field: "amount", headerName: "Amount", width: 130 },
+    { field: "dateCreated", headerName: "Creation time", width: 200 },
+    { field: "dateUpdated", headerName: "Updated time", width: 200 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "incomeGroup", headerName: "Group name", width: 200 },
   ];
 
   const handleClickOpen = () => {
@@ -84,14 +92,14 @@ const Dashboard = () => {
       </Button>
       <MyTable
         rows={expensesLastFiveData}
-        columns={columns}
+        columns={columnsExpense}
         title={"Last five expenses"}
         className={styles.margin}
       />
 
       <MyTable
         rows={incomesLastFiveData}
-        columns={columns}
+        columns={columnsIncome}
         title={"Last five incomes"}
         className={styles.margin}
       />

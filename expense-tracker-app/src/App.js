@@ -5,6 +5,7 @@ import GroupListPage from "./pages/GroupListPage";
 import ListPage from "./pages/ListPage";
 import Dashboard from "./pages/Dashboard";
 import Navbar from "./pages/Navbar";
+import GroupDetails from "./pages/GroupDetails";
 
 export default function App() {
   return (
@@ -20,6 +21,9 @@ export default function App() {
           </Route>
           <Route path="/groupListPage">
             <GroupListPage />
+          </Route>
+          <Route path="/details/:transactionType/:groupType/:id">
+            <GroupDetails />
           </Route>
         </Switch>
       </div>

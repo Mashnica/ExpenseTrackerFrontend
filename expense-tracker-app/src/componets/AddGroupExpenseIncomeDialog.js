@@ -66,7 +66,7 @@ const AddGroupExpenseIncomeDialog = (props) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Add</Button>
+          <Button onClick={handleClose}>Save</Button>
         </DialogActions>
       </Dialog>
     </>
