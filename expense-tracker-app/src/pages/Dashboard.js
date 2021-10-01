@@ -5,25 +5,32 @@ import { useState } from "react";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
-import { getLastFiveExpenses, getLastFiveIncomes } from "../services/service";
+import { getData } from "../services/service";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
+  const pathLastExpense = "expenses/last-five";
+  const pathLastIncome = "incomes/last-five";
+
   const {
     data: expensesLastFiveData,
     error: expensesLastFiveError,
     isLoading: isLoadingExpensesLastFive,
     isError: isErrorExpensesLastFive,
-  } = useQuery("lastFiveExpenses", getLastFiveExpenses);
+  } = useQuery(["expenses/last-five", pathLastExpense], () =>
+    getData(pathLastExpense)
+  );
 
   const {
     data: incomesLastFiveData,
     error: incomesLastFiveError,
     isLoading: isLoadingIncomesLastFive,
     isError: isErrorIncomesLastFive,
-  } = useQuery("lastFiveIncomes", getLastFiveIncomes);
+  } = useQuery(["expenses/last-five", pathLastIncome], () =>
+    getData(pathLastIncome)
+  );
   if (isLoadingExpensesLastFive || isLoadingIncomesLastFive) {
     return (
       <>
@@ -42,13 +49,21 @@ const Dashboard = () => {
     );
   }
 
-  const columns = [
+  const columnsExpense = [
     { field: "_id", headerName: "No.", width: 70 },
     { field: "amount", headerName: "Amount", width: 130 },
     { field: "dateCreated", headerName: "Creation time", width: 200 },
     { field: "dateUpdated", headerName: "Updated time", width: 200 },
     { field: "description", headerName: "Description", width: 200 },
     { field: "expenseGroup", headerName: "Group name", width: 200 },
+  ];
+  const columnsIncome = [
+    { field: "_id", headerName: "No.", width: 70 },
+    { field: "amount", headerName: "Amount", width: 130 },
+    { field: "dateCreated", headerName: "Creation time", width: 200 },
+    { field: "dateUpdated", headerName: "Updated time", width: 200 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "incomeGroup", headerName: "Group name", width: 200 },
   ];
 
   const handleClickOpen = () => {
@@ -84,14 +99,14 @@ const Dashboard = () => {
       </Button>
       <MyTable
         rows={expensesLastFiveData}
-        columns={columns}
+        columns={columnsExpense}
         title={"Last five expenses"}
         className={styles.margin}
       />
 
       <MyTable
         rows={incomesLastFiveData}
-        columns={columns}
+        columns={columnsIncome}
         title={"Last five incomes"}
         className={styles.margin}
       />

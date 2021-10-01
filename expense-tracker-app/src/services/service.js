@@ -1,12 +1,12 @@
 const axios = require("axios");
 
 const client = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: process.env.REACT_APP_base_URL,
 });
 
-export async function getExpenseGroups() {
+export async function getData(path) {
   const res = await client
-    .get("/expense-groups")
+    .get(`${path}`)
     .then(function (response) {
       return response;
     })
@@ -15,9 +15,9 @@ export async function getExpenseGroups() {
     });
   return res.data;
 }
-export async function getIncomeGroups() {
+export async function getLastFive(groupType, path) {
   const res = await client
-    .get("/income-groups")
+    .get(`${groupType}/${path}`)
     .then(function (response) {
       return response;
     })
@@ -26,9 +26,9 @@ export async function getIncomeGroups() {
     });
   return res.data;
 }
-export async function getExpenses() {
+export async function getGroupByID(transactionType, groupType, id) {
   const res = await client
-    .get("/expenses")
+    .get(`/${transactionType}/${groupType}/${id}`)
     .then(function (response) {
       return response;
     })
@@ -37,9 +37,10 @@ export async function getExpenses() {
     });
   return res.data;
 }
-export async function getIncomes() {
+
+export async function deleteData(path, id) {
   const res = await client
-    .get("/incomes")
+    .delete(`${path}/${id}`)
     .then(function (response) {
       return response;
     })
@@ -48,9 +49,10 @@ export async function getIncomes() {
     });
   return res.data;
 }
-export async function getLastFiveExpenses() {
+//post
+export async function addData(path, data) {
   const res = await client
-    .get("/expenses/last-five")
+    .post(`${path}`, data)
     .then(function (response) {
       return response;
     })
@@ -59,9 +61,11 @@ export async function getLastFiveExpenses() {
     });
   return res.data;
 }
-export async function getLastFiveIncomes() {
+
+//put
+export async function editData(path, id, data) {
   const res = await client
-    .get("/incomes/last-five")
+    .put(`${path}/${id}`, data)
     .then(function (response) {
       return response;
     })

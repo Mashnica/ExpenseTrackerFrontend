@@ -5,23 +5,30 @@ import styles from "../styles/Navbar.module.css";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
 import { useQuery } from "react-query";
 import { useState } from "react";
-import { getExpenses, getIncomes } from "../services/service";
+import { getData } from "../services/service";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import EditIcon from "@material-ui/icons/Edit";
+import { blue } from "@material-ui/core/colors";
+import { FormControlLabel, IconButton } from "@material-ui/core";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 const ListPage = () => {
   const [open, setOpen] = useState(false);
+  const pathExpense = "expenses";
+  const pathIncome = "incomes";
   const {
     data: expensesData,
     error: expensesError,
     isLoading: isLoadingExpenses,
     isError: isErrorExpenses,
-  } = useQuery("expenses", getExpenses);
+  } = useQuery(["expenses", pathExpense], () => getData(pathExpense));
   const {
     data: incomesData,
     error: incomesError,
     isLoading: isLoadingIncomes,
     isError: isErrorIncomes,
-  } = useQuery("incomes", getIncomes);
+  } = useQuery(["incomes", pathIncome], () => getData(pathIncome));
 
   if (isLoadingExpenses || isLoadingIncomes) {
     return (
@@ -36,14 +43,88 @@ const ListPage = () => {
   if (isErrorExpenses || isErrorIncomes) {
     return <span>Error: {expensesError.message || incomesError.message}</span>;
   }
+  const IconsButtons = ({ index }) => {
+    const handleEditClick = () => {
+      // some action
+      setOpen(true);
+    };
 
-  const columns = [
+    return (
+      <>
+        <FormControlLabel
+          control={
+            <IconButton
+              color="secondary"
+              aria-label="edit icon"
+              onClick={handleEditClick}
+            >
+              <EditIcon style={{ color: blue[500] }} />
+            </IconButton>
+          }
+        />
+        <FormControlLabel
+          control={
+            <IconButton
+              color="secondary"
+              aria-label="add an alarm"
+              // onClick={deleteData(`/${path}/${id}`)}
+            >
+              <DeleteIcon style={{ color: blue[500] }} />
+            </IconButton>
+          }
+        />
+      </>
+    );
+  };
+  const columnsExpense = [
     { field: "_id", headerName: "No", width: 70 },
     { field: "amount", headerName: "Amount", width: 130 },
     { field: "dateCreated", headerName: "Creation time", width: 200 },
     { field: "dateUpdated", headerName: "Updated time", width: 200 },
     { field: "description", headerName: "Description", width: 200 },
     { field: "expenseGroup", headerName: "Group name", width: 200 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      sortable: false,
+      width: 140,
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        return (
+          <div
+            className="d-flex justify-content-between align-items-center"
+            style={{ cursor: "pointer" }}
+          >
+            <IconsButtons index={params.row.id} />
+          </div>
+        );
+      },
+    },
+  ];
+  const columnsIncome = [
+    { field: "_id", headerName: "No", width: 70 },
+    { field: "amount", headerName: "Amount", width: 130 },
+    { field: "dateCreated", headerName: "Creation time", width: 200 },
+    { field: "dateUpdated", headerName: "Updated time", width: 200 },
+    { field: "description", headerName: "Description", width: 200 },
+    { field: "incomeGroup", headerName: "Group name", width: 200 },
+    {
+      field: "actions",
+      headerName: "Actions",
+      sortable: false,
+      width: 140,
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        return (
+          <div
+            className="d-flex justify-content-between align-items-center"
+            style={{ cursor: "pointer" }}
+          >
+            <IconsButtons index={params.row.id} />
+          </div>
+        );
+      },
+    },
   ];
 
   const handleClickOpen = () => {
@@ -57,7 +138,7 @@ const ListPage = () => {
     <>
       <MyTable
         rows={expensesData}
-        columns={columns}
+        columns={columnsExpense}
         title={"Expenses list page"}
       />
       <AddExpenseIncomeDialog
@@ -73,17 +154,17 @@ const ListPage = () => {
         Add expense
       </Button>
       <p />
-      <Button
+      {/* <Button
         variant="contained"
         onClick={handleClickOpen}
         className={styles.button}
       >
         Edit expense
-      </Button>
+      </Button> */}
 
       <MyTable
         rows={incomesData}
-        columns={columns}
+        columns={columnsIncome}
         title={"Incomes list page "}
       />
       <Button
@@ -94,13 +175,13 @@ const ListPage = () => {
         Add income
       </Button>
       <p />
-      <Button
+      {/* <Button
         variant="contained"
         onClick={handleClickOpen}
         className={styles.button}
       >
         Edit income
-      </Button>
+      </Button> */}
     </>
   );
 };
