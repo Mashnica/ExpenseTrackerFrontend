@@ -5,7 +5,7 @@ import styles from "../styles/Navbar.module.css";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
 import { useQuery } from "react-query";
 import { useState } from "react";
-import { deleteData, getData } from "../services/service";
+import { getData } from "../services/service";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import EditIcon from "@material-ui/icons/Edit";
@@ -28,7 +28,7 @@ const ListPage = () => {
     error: incomesError,
     isLoading: isLoadingIncomes,
     isError: isErrorIncomes,
-  } = useQuery(["incomrs", pathIncome], () => getData(pathIncome));
+  } = useQuery(["incomes", pathIncome], () => getData(pathIncome));
 
   if (isLoadingExpenses || isLoadingIncomes) {
     return (
@@ -43,7 +43,7 @@ const ListPage = () => {
   if (isErrorExpenses || isErrorIncomes) {
     return <span>Error: {expensesError.message || incomesError.message}</span>;
   }
-  const IconsButtons = (props) => {
+  const IconsButtons = ({ index }) => {
     const handleEditClick = () => {
       // some action
       setOpen(true);
@@ -55,7 +55,7 @@ const ListPage = () => {
           control={
             <IconButton
               color="secondary"
-              aria-label="add an alarm"
+              aria-label="edit icon"
               onClick={handleEditClick}
             >
               <EditIcon style={{ color: blue[500] }} />
@@ -67,7 +67,7 @@ const ListPage = () => {
             <IconButton
               color="secondary"
               aria-label="add an alarm"
-              onClick={deleteData(`/${props.path}/${props.id}`)}
+              // onClick={deleteData(`/${path}/${id}`)}
             >
               <DeleteIcon style={{ color: blue[500] }} />
             </IconButton>
@@ -95,7 +95,7 @@ const ListPage = () => {
             className="d-flex justify-content-between align-items-center"
             style={{ cursor: "pointer" }}
           >
-            <IconsButtons props={params.row.id} />
+            <IconsButtons index={params.row.id} />
           </div>
         );
       },
@@ -120,7 +120,7 @@ const ListPage = () => {
             className="d-flex justify-content-between align-items-center"
             style={{ cursor: "pointer" }}
           >
-            <IconsButtons props={params.row.id} />
+            <IconsButtons index={params.row.id} />
           </div>
         );
       },

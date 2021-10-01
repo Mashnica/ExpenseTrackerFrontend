@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const client = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: process.env.REACT_APP_base_URL,
 });
 
 export async function getData(path) {
