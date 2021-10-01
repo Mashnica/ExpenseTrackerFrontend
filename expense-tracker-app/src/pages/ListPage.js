@@ -5,7 +5,7 @@ import styles from "../styles/Navbar.module.css";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
 import { useQuery } from "react-query";
 import { useState } from "react";
-import { getExpenses, getIncomes } from "../services/service";
+import { deleteData, getData } from "../services/service";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import EditIcon from "@material-ui/icons/Edit";
@@ -15,18 +15,20 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const ListPage = () => {
   const [open, setOpen] = useState(false);
+  const pathExpense = "expenses";
+  const pathIncome = "incomes";
   const {
     data: expensesData,
     error: expensesError,
     isLoading: isLoadingExpenses,
     isError: isErrorExpenses,
-  } = useQuery("expenses", getExpenses);
+  } = useQuery(["expenses", pathExpense], () => getData(pathExpense));
   const {
     data: incomesData,
     error: incomesError,
     isLoading: isLoadingIncomes,
     isError: isErrorIncomes,
-  } = useQuery("incomes", getIncomes);
+  } = useQuery(["incomrs", pathIncome], () => getData(pathIncome));
 
   if (isLoadingExpenses || isLoadingIncomes) {
     return (
@@ -41,7 +43,7 @@ const ListPage = () => {
   if (isErrorExpenses || isErrorIncomes) {
     return <span>Error: {expensesError.message || incomesError.message}</span>;
   }
-  const MatEdit = ({ index }) => {
+  const IconsButtons = (props) => {
     const handleEditClick = () => {
       // some action
       setOpen(true);
@@ -65,7 +67,7 @@ const ListPage = () => {
             <IconButton
               color="secondary"
               aria-label="add an alarm"
-              // onClick={handleEditClick}
+              onClick={deleteData(`/${props.path}/${props.id}`)}
             >
               <DeleteIcon style={{ color: blue[500] }} />
             </IconButton>
@@ -93,7 +95,7 @@ const ListPage = () => {
             className="d-flex justify-content-between align-items-center"
             style={{ cursor: "pointer" }}
           >
-            <MatEdit index={params.row.id} />
+            <IconsButtons props={params.row.id} />
           </div>
         );
       },
@@ -118,7 +120,7 @@ const ListPage = () => {
             className="d-flex justify-content-between align-items-center"
             style={{ cursor: "pointer" }}
           >
-            <MatEdit index={params.row.id} />
+            <IconsButtons props={params.row.id} />
           </div>
         );
       },

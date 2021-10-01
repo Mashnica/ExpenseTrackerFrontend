@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import styles from "../styles/Navbar.module.css";
 import AddGroupExpenseIncomeDialog from "../componets/AddGroupExpenseIncomeDialog";
-import { getExpenseGroups, getIncomeGroups } from "../services/service";
+import { getData } from "../services/service";
 import { useQuery } from "react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -17,6 +17,8 @@ import { useHistory } from "react-router-dom";
 
 const GroupListPage = () => {
   const [open, setOpen] = useState(false);
+  const pathExpense = "expense-groups";
+  const pathIncome = "income-groups";
 
   const history = useHistory();
   const {
@@ -24,13 +26,13 @@ const GroupListPage = () => {
     error: expenseGroupsError,
     isLoading: isLoadingExpenseGroups,
     isError: isErrorExpenseGroups,
-  } = useQuery("expenseGroup", getExpenseGroups);
+  } = useQuery(["expense-groups", pathExpense], () => getData(pathExpense));
   const {
     data: incomeGroupsData,
     error: incomeGroupsError,
     isLoading: isLoadingIncomeGroups,
     isError: isErrorIncomeGroups,
-  } = useQuery("incomeGroup", getIncomeGroups);
+  } = useQuery(["income-groups", pathIncome], () => getData(pathIncome));
 
   if (isLoadingExpenseGroups || isLoadingIncomeGroups) {
     return (

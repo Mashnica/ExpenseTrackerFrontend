@@ -5,25 +5,32 @@ import { useState } from "react";
 import AddExpenseIncomeDialog from "../componets/AddExpenseIncomeDialog";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
-import { getLastFiveExpenses, getLastFiveIncomes } from "../services/service";
+import { getData } from "../services/service";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
+  const pathLastExpense = "expenses/last-five";
+  const pathLastIncome = "incomes/last-five";
+
   const {
     data: expensesLastFiveData,
     error: expensesLastFiveError,
     isLoading: isLoadingExpensesLastFive,
     isError: isErrorExpensesLastFive,
-  } = useQuery("lastFiveExpenses", getLastFiveExpenses);
+  } = useQuery(["expenses/last-five", pathLastExpense], () =>
+    getData(pathLastExpense)
+  );
 
   const {
     data: incomesLastFiveData,
     error: incomesLastFiveError,
     isLoading: isLoadingIncomesLastFive,
     isError: isErrorIncomesLastFive,
-  } = useQuery("lastFiveIncomes", getLastFiveIncomes);
+  } = useQuery(["expenses/last-five", pathLastIncome], () =>
+    getData(pathLastIncome)
+  );
   if (isLoadingExpensesLastFive || isLoadingIncomesLastFive) {
     return (
       <>
